@@ -34,7 +34,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
         fun registerWith(registrar: PluginRegistry.Registrar) {
             val channel = MethodChannel(registrar.messenger(), "com.jarvanmo/fluwx")
             val authHandler = FluwxAuthHandler(channel)
-            WXAPiHandler.setContext(registrar.activity().applicationContext)
+            WXAPiHandler.setContext(registrar.activity()?.applicationContext)
             channel.setMethodCallHandler(FluwxPlugin().apply {
                 this.fluwxChannel = channel
                 this.authHandler = authHandler
@@ -224,7 +224,7 @@ class FluwxPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,PluginRegist
     private fun openWXApp(result: MethodChannel.Result) = result.success(WXAPiHandler.wxApi?.openWXApp())
 
     override fun onNewIntent(intent: Intent): Boolean {
-        handelIntent(intent)
+        handelIntent(intent!!)
         return false
     }
 }

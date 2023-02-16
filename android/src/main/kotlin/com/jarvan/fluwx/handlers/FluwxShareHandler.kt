@@ -50,9 +50,9 @@ internal class FluwxShareHandlerCompat(private val registrar: PluginRegistry.Reg
         val uri = Uri.parse(it)
         val packageName = uri.getQueryParameter("package")
         val key = if (TextUtils.isEmpty(packageName)) {
-            registrar.lookupKeyForAsset(uri.path)
+            registrar.lookupKeyForAsset(uri.path!!)
         } else {
-            registrar.lookupKeyForAsset(uri.path, packageName)
+            registrar.lookupKeyForAsset(uri.path!!, packageName!!)
         }
         context.assets.openFd(key)
     }

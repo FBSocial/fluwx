@@ -20,10 +20,8 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:fluwx/fluwx.dart';
-import 'package:fluwx/src/wechat_enums.dart';
 
 const Map<Type, String> _shareModelMethodMapper = {
   WeChatShareTextModel: "shareText",
@@ -48,7 +46,12 @@ Stream<BaseWeChatResponse> get weChatResponseEventHandler =>
 ///true if WeChat installed,otherwise false.
 ///Please add WeChat to the white list in order to get the correct result on IOS.
 Future<bool> get isWeChatInstalled async {
-  return await _channel.invokeMethod("isWeChatInstalled");
+  try {
+    return await _channel.invokeMethod("isWeChatInstalled");
+  } catch (e) {
+    print("isWeChatInstalled exception: ${e.toString}");
+  }
+  return false;
 }
 
 ///just open WeChat, noting to do.
@@ -259,7 +262,8 @@ Future<bool> authWeChatByPhoneLogin(
       .invokeMethod("authByPhoneLogin", {"scope": scope, "state": state});
 }
 
-Future<bool> openWeChatCustomerServiceChat({required String url, required String corpId}) async {
-  return await _channel
-      .invokeMethod("openWeChatCustomerServiceChat", {"corpId": corpId, "url": url});
+Future<bool> openWeChatCustomerServiceChat(
+    {required String url, required String corpId}) async {
+  return await _channel.invokeMethod(
+      "openWeChatCustomerServiceChat", {"corpId": corpId, "url": url});
 }
